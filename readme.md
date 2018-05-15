@@ -6,7 +6,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8e83d3bb3cbb6e06ec67/test_coverage)](https://codeclimate.com/github/pwm/tc/test_coverage)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Typed collection is a simple abstract collection class that type checks its elements upon creation. Collections are iterable, countable and listable.
+`TypedCollection` is a simple abstract collection class that type checks its elements upon creation. Collections are iterable, countable and listable.
 
 ## Table of Contents
 
