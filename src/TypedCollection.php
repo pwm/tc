@@ -26,11 +26,7 @@ abstract class TypedCollection implements IteratorAggregate, Countable
 
     public function getIterator(): Generator
     {
-        return (function () {
-            foreach ($this->elements as $k => $v) {
-                yield $k => $v;
-            }
-        })();
+        yield from $this->elements;
     }
 
     public function count(): int
