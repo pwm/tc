@@ -1,5 +1,11 @@
 # Typed Collections
 
+[![Build Status](https://travis-ci.org/pwm/tc.svg?branch=master)](https://travis-ci.org/pwm/tc)
+[![codecov](https://codecov.io/gh/pwm/tc/branch/master/graph/badge.svg)](https://codecov.io/gh/pwm/tc)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8e83d3bb3cbb6e06ec67/maintainability)](https://codeclimate.com/github/pwm/tc/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8e83d3bb3cbb6e06ec67/test_coverage)](https://codeclimate.com/github/pwm/tc/test_coverage)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Typed collection is a simple abstract collection class that type checks its elements upon creation. Collections are iterable, countable and listable.
 
 ## Table of Contents
