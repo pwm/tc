@@ -33,7 +33,7 @@ final class TypedCollectionTest extends TestCase
         ];
 
         foreach ($typedCollectionMap as $type => $typedList) {
-            self::assertInstanceOf(TypedCollection::class, new $type($typedList));
+            self::assertInstanceOf(TypedCollection::class, new $type(...$typedList));
         }
     }
 
@@ -54,7 +54,7 @@ final class TypedCollectionTest extends TestCase
 
         foreach ($untypedCollectionMap as $type => $untypedList) {
             try {
-                new $type($untypedList);
+                new $type(...$untypedList);
                 self::assertTrue(false); // should fail if we get here
             } catch (Throwable $e) {
                 self::assertInstanceOf(TypeError::class, $e);
@@ -69,7 +69,7 @@ final class TypedCollectionTest extends TestCase
     {
         $list = [1, 2, 3];
 
-        $collection = new IntCollection($list);
+        $collection = new IntCollection(...$list);
 
         // iterable
         foreach ($collection as $element) {
@@ -88,13 +88,21 @@ final class TypedCollectionTest extends TestCase
      */
     public function collections_can_be_empty(): void
     {
-        self::assertInstanceOf(ArrayCollection::class, new ArrayCollection([]));
-        self::assertInstanceOf(BoolCollection::class, new BoolCollection([]));
-        self::assertInstanceOf(CallableCollection::class, new CallableCollection([]));
-        self::assertInstanceOf(FloatCollection::class, new FloatCollection([]));
-        self::assertInstanceOf(FoobarCollection::class, new FoobarCollection([]));
-        self::assertInstanceOf(IntCollection::class, new IntCollection([]));
-        self::assertInstanceOf(StringCollection::class, new StringCollection([]));
+        $emptyList = [];
+
+        $emptyCollectionMap = [
+            ArrayCollection::class    => $emptyList,
+            BoolCollection::class     => $emptyList,
+            CallableCollection::class => $emptyList,
+            FloatCollection::class    => $emptyList,
+            FoobarCollection::class   => $emptyList,
+            IntCollection::class      => $emptyList,
+            StringCollection::class   => $emptyList,
+        ];
+
+        foreach ($emptyCollectionMap as $type => $emptyList) {
+            self::assertInstanceOf(TypedCollection::class, new $type(...$emptyList));
+        }
     }
 
     /**
@@ -102,19 +110,21 @@ final class TypedCollectionTest extends TestCase
      */
     public function null_is_never_typed(): void
     {
+        $nullList = [null];
+
         $nullTypedCollectionMap = [
-            ArrayCollection::class    => [null],
-            BoolCollection::class     => [null],
-            CallableCollection::class => [null],
-            FloatCollection::class    => [null],
-            FoobarCollection::class   => [null],
-            IntCollection::class      => [null],
-            StringCollection::class   => [null],
+            ArrayCollection::class    => $nullList,
+            BoolCollection::class     => $nullList,
+            CallableCollection::class => $nullList,
+            FloatCollection::class    => $nullList,
+            FoobarCollection::class   => $nullList,
+            IntCollection::class      => $nullList,
+            StringCollection::class   => $nullList,
         ];
 
         foreach ($nullTypedCollectionMap as $type => $nullList) {
             try {
-                new $type($nullList);
+                new $type(...$nullList);
                 self::assertTrue(false); // should fail if we get here
             } catch (Throwable $e) {
                 self::assertInstanceOf(TypeError::class, $e);

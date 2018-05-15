@@ -7,7 +7,7 @@ use Pwm\TC\TypedCollection;
 
 final class FoobarCollection extends TypedCollection
 {
-    public function __construct(array $foobars)
+    public function __construct(...$foobars)
     {
         parent::__construct(function (Foobar $foobar) {
             return $foobar;

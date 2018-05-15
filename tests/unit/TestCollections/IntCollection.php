@@ -7,7 +7,7 @@ use Pwm\TC\TypedCollection;
 
 final class IntCollection extends TypedCollection
 {
-    public function __construct(array $ints)
+    public function __construct(...$ints)
     {
         parent::__construct(function (int $int) {
             return $int;

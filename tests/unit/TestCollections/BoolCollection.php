@@ -7,7 +7,7 @@ use Pwm\TC\TypedCollection;
 
 final class BoolCollection extends TypedCollection
 {
-    public function __construct(array $bools)
+    public function __construct(...$bools)
     {
         parent::__construct(function (bool $bool) {
             return $bool;

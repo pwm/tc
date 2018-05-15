@@ -7,7 +7,7 @@ use Pwm\TC\TypedCollection;
 
 final class CallableCollection extends TypedCollection
 {
-    public function __construct(array $callables)
+    public function __construct(...$callables)
     {
         parent::__construct(function (callable $callable) {
             return $callable;

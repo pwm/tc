@@ -7,7 +7,7 @@ use Pwm\TC\TypedCollection;
 
 final class StringCollection extends TypedCollection
 {
-    public function __construct(array $strings)
+    public function __construct(...$strings)
     {
         parent::__construct(function (string $string) {
             return $string;

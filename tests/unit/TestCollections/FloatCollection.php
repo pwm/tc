@@ -7,7 +7,7 @@ use Pwm\TC\TypedCollection;
 
 final class FloatCollection extends TypedCollection
 {
-    public function __construct(array $floats)
+    public function __construct(...$floats)
     {
         parent::__construct(function (float $float) {
             return $float;
