@@ -6,7 +6,9 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8e83d3bb3cbb6e06ec67/test_coverage)](https://codeclimate.com/github/pwm/tc/test_coverage)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-`TypedCollection` is a simple abstract collection class that type checks its elements upon creation. Collections are iterable, countable and listable.
+`TypedCollection` is a simple abstract collection class that type checks its elements upon creation ensuring a typed collection. 
+
+Collections created using `TypedCollection` are immutable, iterable, countable and listable. If you need a mutable container you can simply subtype it and add the relevant mutators.
 
 ## Table of Contents
 
@@ -65,9 +67,9 @@ assert($intCollection->toList() === [1, 2, 3]);
 
 The trick is to supply a function to `TypedCollection` that requires its argument to be of a particular type. For this we just use PHP's built in function type declaration. This works with built in types as well as user defined types (aka. classes).
 
-It also implements the `IteratorAggregate` and `Countable` interfaces.
+It also implements the `IteratorAggregate` and `Countable` interfaces for ease of use. `getIterator()` returns a `Generator` which aligns well with the immutable semantics of the collection, ie. you can iterate it accessing its elements, without having access to the container itself.
 
-Use `->toList()` to get the underlying list representation. This is useful for using it with map/filter/reduce.
+To get the underlying mutable array representation use `toList()`. This is useful for using map/filter/reduce.
 
 ## Tests
 
