@@ -35,7 +35,7 @@ Here is an example of an integer collection:
 ```php
 class IntCollection extends TypedCollection
 {
-    public function __construct(array $ints)
+    public function __construct(...$ints)
     {
         parent::__construct(function (int $int) {
             return $int;
@@ -47,7 +47,7 @@ class IntCollection extends TypedCollection
 Now we can use our int collection:
 
 ```php
-$intCollection = new IntCollection([1, 2, 3]);
+$intCollection = new IntCollection(1, 2, 3);
 
 // iterable
 foreach ($intCollection as $element) {
