@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace Pwm\TC;
 
 use PHPUnit\Framework\TestCase;
-use Pwm\TC\TestCollections\ArrayCollection;
-use Pwm\TC\TestCollections\BoolCollection;
-use Pwm\TC\TestCollections\CallableCollection;
-use Pwm\TC\TestCollections\FloatCollection;
-use Pwm\TC\TestCollections\Foobar;
-use Pwm\TC\TestCollections\FoobarCollection;
-use Pwm\TC\TestCollections\IntCollection;
-use Pwm\TC\TestCollections\StringCollection;
+use Pwm\TC\Concrete\BoolCollection;
+use Pwm\TC\Concrete\CallableCollection;
+use Pwm\TC\Concrete\FloatCollection;
+use Pwm\TC\Concrete\IntCollection;
+use Pwm\TC\Concrete\StringCollection;
+use Pwm\TC\TestCollection\Foobar;
+use Pwm\TC\TestCollection\FoobarCollection;
+use Pwm\TC\TestCollection\UntypedCollection;
 use Throwable;
 use TypeError;
 
@@ -23,7 +23,6 @@ final class TypedCollectionTest extends TestCase
     public function it_creates_typed_collections(): void
     {
         $typedCollectionMap = [
-            ArrayCollection::class    => [[], [], []],
             BoolCollection::class     => [true, false, true],
             CallableCollection::class => [function ($a) { return $a; }, function ($b) { return $b; }],
             FloatCollection::class    => [1.0, 2.0, 3.0],
@@ -40,10 +39,9 @@ final class TypedCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_on_untyped_collections(): void
+    public function it_throws_on_untyped_elements(): void
     {
         $untypedCollectionMap = [
-            ArrayCollection::class    => [[], [], 'a'],
             BoolCollection::class     => [true, false, 1],
             CallableCollection::class => [function ($a) { return $a; }, 4],
             FloatCollection::class    => [1.0, 2.0, 'a'],
@@ -64,12 +62,19 @@ final class TypedCollectionTest extends TestCase
 
     /**
      * @test
+     * @expectedException \TypeError
+     */
+    public function it_throws_on_untyped_collection(): void
+    {
+        new UntypedCollection(1, 'a', false);
+    }
+
+    /**
+     * @test
      */
     public function collections_are_iterable_countable_and_listable(): void
     {
-        $list = [1, 2, 3];
-
-        $collection = new IntCollection(...$list);
+        $collection = new IntCollection(1, 2, 3);
 
         // iterable
         foreach ($collection as $element) {
@@ -80,7 +85,7 @@ final class TypedCollectionTest extends TestCase
         self::assertCount(3, $collection);
 
         // listable
-        self::assertSame($list, $collection->toList());
+        self::assertSame([1, 2, 3], $collection->toList());
     }
 
     /**
@@ -91,7 +96,6 @@ final class TypedCollectionTest extends TestCase
         $emptyList = [];
 
         $emptyCollectionMap = [
-            ArrayCollection::class    => $emptyList,
             BoolCollection::class     => $emptyList,
             CallableCollection::class => $emptyList,
             FloatCollection::class    => $emptyList,
@@ -113,7 +117,6 @@ final class TypedCollectionTest extends TestCase
         $nullList = [null];
 
         $nullTypedCollectionMap = [
-            ArrayCollection::class    => $nullList,
             BoolCollection::class     => $nullList,
             CallableCollection::class => $nullList,
             FloatCollection::class    => $nullList,

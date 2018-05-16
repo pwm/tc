@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pwm\TC\TestCollections;
+namespace Pwm\TC\TestCollection;
 
 use Pwm\TC\TypedCollection;
 

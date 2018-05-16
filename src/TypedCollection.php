@@ -3,19 +3,24 @@ declare(strict_types=1);
 
 namespace Pwm\TC;
 
+use Closure;
 use Countable;
 use Generator;
 use IteratorAggregate;
+use ReflectionFunction;
+use TypeError;
 
 abstract class TypedCollection implements IteratorAggregate, Countable
 {
     /** @var array */
     protected $elements;
 
-    public function __construct(callable $typeCheck, array $elements)
+    public function __construct(Closure $typeChecker, array $elements)
     {
-        $this->elements = \array_map(function ($element) use ($typeCheck) {
-            return $typeCheck($element);
+        self::ensureTypeCheckerIsTyped($typeChecker);
+
+        $this->elements = \array_map(function ($element) use ($typeChecker) {
+            return $typeChecker($element);
         }, $elements);
     }
 
@@ -32,5 +37,13 @@ abstract class TypedCollection implements IteratorAggregate, Countable
     public function count(): int
     {
         return \count($this->elements);
+    }
+
+    private static function ensureTypeCheckerIsTyped(Closure $typeChecker): void
+    {
+        $params = (new ReflectionFunction($typeChecker))->getParameters();
+        if (\count($params) !== 1 || ! $params[0]->hasType()) {
+            throw new TypeError('The supplied type checker function is not typed.');
+        }
     }
 }
