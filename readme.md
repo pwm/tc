@@ -14,6 +14,7 @@ The library comes with a few concrete implementations, namely: Bool, Callable, F
 
 ## Table of Contents
 
+* [Why](#why)
 * [Requirements](#requirements)
 * [Installation](#installation)
 * [Usage](#usage)
@@ -21,6 +22,64 @@ The library comes with a few concrete implementations, namely: Bool, Callable, F
 * [Tests](#tests)
 * [Changelog](#changelog)
 * [Licence](#licence)
+
+## Why
+
+With the advent of PHP7 the language started supporting type declarations to a degree, so we can finally write code like:
+
+```php
+function isEven(int $x): bool {
+    return $x % 2 === 0;
+}
+```
+
+where it is guaranteed that `$x` is an `int` as the return type is `bool`. On the other hand we still can't say things like we want to get a list of integers, ie.:
+
+```php
+function sum(int[] $xs): int { // can't write int[], only array
+    return array_sum($xs);
+}
+```
+
+is not valid php syntax. We can only use `array` as type declaration here and thus something nonsensical like `sum([1, 'a', false])` can't be caught by the type checker.
+
+Taking the above one step further it's perfectly valid to only want to guarantee that elements of a list are of a specific type, regardless of what the actual type is. This might sounds strange at first, so here is an example:
+
+```php
+$addOne = function (int $x): int { return $x + 1; };
+$toUpper = function (string $s): string { return strtoupper($s); };
+
+array_map($addOne, [1, 2, 3]);
+array_map($toUpper, ['a', 'b', 'c']);
+```
+
+Map cares neither about its function's argument type nor about the type of elements of its list. It only cares about 2 things:
+
+ * That the list's elements are of all the same type
+ * That this type is the same as the function's argument type
+
+With PHP's `array` we can't guarantee either. With `TypedCollection` we can guarantee the first:
+
+```php
+function map(callable $f, TypedCollection $c) {
+    return array_map($f, $c->toList());
+}
+```
+
+guarantees that elements of `$c` are of the same type, ie.:
+
+```php
+map($addOne, new IntCollection(1, 2, 3)); // [2, 3, 4]
+map($toUpper, new StringCollection('a', 'b', 'c')); // ['A', 'B', 'C']
+```
+
+but
+
+```php
+map($addOne, new IntCollection(1, 'a', false)); // Fatal error: Uncaught TypeError
+```
+
+A small but important step towards more type safe and robust code.
 
 ## Requirements
 
@@ -64,6 +123,8 @@ assert(count($intCollection) === 3);
 // listable
 assert($intCollection->toList() === [1, 2, 3]);
 ```
+
+Basic scalar typed collections, ie. bool, callable, float, int and string is part of the lib for convenience.
  
 ## How it works
 
