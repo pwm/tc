@@ -49,14 +49,14 @@ Taking the above one step further it's perfectly valid to only want to guarantee
 $addOne = function (int $x): int { return $x + 1; };
 $toUpper = function (string $s): string { return strtoupper($s); };
 
-array_map($addOne, [1, 2, 3]);
-array_map($toUpper, ['a', 'b', 'c']);
+array_map($addOne, [1, 2, 3]); // [2, 3, 4]
+array_map($toUpper, ['a', 'b', 'c']); // ['A', 'B', 'C']
 ```
 
 Map cares neither about its function's argument type nor about the type of elements of its list. It only cares about 2 things:
 
  * That the list's elements are of all the same type
- * That this type is the same as the function's argument type
+ * That this type is the same as its function's argument type
 
 With PHP's `array` we can't guarantee either. With `TypedCollection` we can guarantee the first:
 
